@@ -1,0 +1,18 @@
+services:
+  asterisk:
+    image: andrius/asterisk:20
+    container_name: asterisk
+    #network_mode: host
+    ports:
+      - "5060:5060/udp"
+      - "5060:5060/tcp"
+      - "10000-10004:10000-10004/udp"
+    volumes:
+      - ./asterisk-config/pjsip.conf:/etc/asterisk/pjsip.conf:ro
+      - ./asterisk-config/extensions.conf:/etc/asterisk/extensions.conf:ro
+      - ./asterisk-config/asterisk.conf:/etc/asterisk/asterisk.conf:ro
+      - ./asterisk-config/modules.conf:/etc/asterisk/modules.conf:ro
+      - ./asterisk-config/logger.conf:/etc/asterisk/logger.conf:ro
+      - ./asterisk-config/rtp.conf:/etc/asterisk/rtp.conf:ro
+      - ./sounds:/var/lib/asterisk/sounds/custom:ro
+    restart: unless-stopped
