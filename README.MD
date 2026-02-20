@@ -1,29 +1,5 @@
 # Asterisk HTTP Routed Auto Attendant
 
-## Setup
-
-```
-docker compose up -d --build
-```
-
-## Test Account
-
-| Field | Value |
-|-------|-------|
-| Username | `6001` |
-| Password | `test6001pass` |
-| Server | Your host IP |
-| Transport | UDP |
-
-## Extensions
-
-| Extension | Description |
-|-----------|-------------|
-| 100 | Echo test |
-| 444 | Auto attendant - prompts for phone number, sends to API via HTTP |
-| 777 | Plays chicken sound |
-| 888 | Plays cow sound |
-
 ## Architecture
 
 ```mermaid
@@ -62,6 +38,30 @@ sequenceDiagram
 
     Note over A,F: On API timeout/error,<br>defaults to ext 888
 ```
+
+## Setup
+
+```
+docker compose up -d --build
+```
+
+## Test Account
+
+| Field | Value |
+|-------|-------|
+| Username | `6001` |
+| Password | `test6001pass` |
+| Server | Your host IP |
+| Transport | UDP |
+
+## Extensions
+
+| Extension | Description |
+|-----------|-------------|
+| 100 | Echo test |
+| 444 | Auto attendant - prompts for phone number, sends to API via HTTP |
+| 777 | Plays chicken sound |
+| 888 | Plays cow sound |
 
 ## API
 
