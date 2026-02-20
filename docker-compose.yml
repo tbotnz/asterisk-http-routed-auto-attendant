@@ -16,3 +16,10 @@ services:
       - ./asterisk-config/rtp.conf:/etc/asterisk/rtp.conf:ro
       - ./sounds:/var/lib/asterisk/sounds/custom:ro
     restart: unless-stopped
+
+  api:
+    build: ./api
+    container_name: api
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
