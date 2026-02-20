@@ -24,6 +24,45 @@ docker compose up -d --build
 | 777 | Plays chicken sound |
 | 888 | Plays cow sound |
 
+## Architecture
+
+```mermaid
+graph LR
+    subgraph Host
+        SIP[SIP Client<br>port 5060] -->|REGISTER / INVITE| AST
+
+        subgraph Docker
+            AST[Asterisk<br>PJSIP]
+            API[FastAPI<br>port 8000]
+
+            AST -->|ext 444<br>CURL: GET /call/number| API
+            API -->|redirect,caller_id| AST
+        end
+    end
+
+    AST -->|ext 777| C[Chicken Audio]
+    AST -->|ext 888| W[Cow Audio]
+    AST -->|ext 100| E[Echo Test]
+```
+
+```mermaid
+sequenceDiagram
+    participant C as SIP Client
+    participant A as Asterisk
+    participant F as FastAPI
+
+    C->>A: INVITE ext 444
+    A->>C: Answer + play prompt
+    C->>A: DTMF digits (phone number)
+    A->>F: GET /call/{phone_number}
+    F->>A: redirect,caller_id
+    A->>A: Set CALLERID, Goto redirect ext
+    A->>C: Play audio (777=chicken, 888=cow)
+    A->>C: Hangup
+
+    Note over A,F: On API timeout/error,<br>defaults to ext 888
+```
+
 ## API
 
 FastAPI server on port 8000. Source is mounted with auto-reload.
